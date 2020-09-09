@@ -16,90 +16,102 @@ contract Election {
         end = false;
     }
 
+    // Return the public address of the owner
     function getOwner() public view returns(address) {
-    return owner;
+        return owner;
     }
 
-    // Only Admin can access
+    // Only Admin
     modifier onlyAdmin() {
         require(msg.sender == owner);
         _;
     }
 
+    // Model a Candidate
     struct Candidate{
+        uint candidateId;
         string name;
         string party;
-        string manifesto;
         uint voteCount;
-        uint constituency;
-        uint candidateId;
-    }
-    mapping(uint => Candidate) public candidateDetails;
-
-    // Only admin can add candidate
-    function addCandidate(string _name, string _party, string _manifesto, uint _constituency) public onlyAdmin {
-    Candidate memory newCandidate = Candidate({
-        name : _name,
-        party : _party,
-        manifesto : _manifesto,
-        voteCount : 0,
-        constituency : _constituency,
-        candidateId : candidateCount
-    });
-    candidateDetails[candidateCount] = newCandidate;
-    candidateCount += 1;
     }
 
-    // get total number of candidates
-    function getCandidateNumber() public view returns (uint) {
-    return candidateCount;
+    mapping(uint => Candidate) public candidates;
+
+    // Add a new candidate
+    function addCandidate(string _name, string _party) public onlyAdmin {
+        candidateCount++;
+        candidates[candidateCount] = Candidate({
+            candidateId : candidateCount,
+            name : _name,
+            party : _party,
+            voteCount : 0
+        });
     }
 
+    function getCandidateName(uint _candidateId) public view returns (string) {
+        return candidates[_candidateId].name;
+    }
+
+    function getCandidateParty(uint _candidateId) public view returns (string) {
+        return candidates[_candidateId].party;
+    }
+
+    function getCandidateVoteCount(uint _candidateId) public view returns (uint) {
+        return candidates[_candidateId].voteCount;
+    }
+
+    // CandidateCount accessor method
+    function getCandidateCount() public view returns (uint) {
+        return candidateCount;
+    }
+
+    // Model a Voter
     struct Voter{
         address voterAddress;
         string name;
-        string aadhar;
-        uint constituency;
         bool hasVoted;
         bool isVerified;
     }
 
-    address[] public voters;
-    mapping(address => Voter) public voterDetails;
+    mapping(address => Voter) voters;
+    // address[] public voters;
 
     // request to be added as voter
-    function requestVoter(string _name, string _aadhar, uint _constituency) public {
-        Voter memory newVoter = Voter({
-            voterAddress : msg.sender,
-            name : _name,
-            aadhar : _aadhar,
-            constituency : _constituency,
-            hasVoted : false,
-            isVerified : false
-        });
-        voterDetails[msg.sender] = newVoter;
-        voters.push(msg.sender);
-        voterCount += 1;
-    }
+    // function requestVoter(string _name, string _aadhar) public {
+    //     Voter memory newVoter = Voter({
+    //         voterAddress : msg.sender,
+    //         name : _name,
+    //         aadhar : _aadhar,
+    //         hasVoted : false,
+    //         isVerified : false
+    //     });
+    //     voters[msg.sender] = newVoter;
+    //     voters.push(msg.sender);
+    //     voterCount += 1;
+    // }
 
     // get total number of voters
     function getVoterCount() public view returns (uint) {
         return voterCount;
     }
 
-    function verifyVoter(address _address) public onlyAdmin {
-        voterDetails[_address].isVerified = true;
-    }
+    // function verifyVoter(address _address) public onlyAdmin {
+    //     voters[_address].isVerified = true;
+    // }
 
-    function vote(uint candidateId) public{
-        require(voterDetails[msg.sender].hasVoted == false);
-        require(voterDetails[msg.sender].isVerified == true);
+    function vote(uint _candidateId) public{
+        require(voters[msg.sender].hasVoted == false);
+        require(voters[msg.sender].isVerified == true);
+        require(_candidateId > 0 && _candidateId <= candidateCount);
         require(start == true);
         require(end == false);
-        candidateDetails[candidateId].voteCount += 1;
-        voterDetails[msg.sender].hasVoted = true;
+        candidates[_candidateId].voteCount++;
+        voters[msg.sender].hasVoted = true;
     }
 
+    /*
+        Start and End the election
+    */
     function startElection() public onlyAdmin {
         start = true;
         end = false;

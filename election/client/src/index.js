@@ -1,17 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Home from './components/Home';
+import 'semantic-ui-css/semantic.min.css';
 
-import { Router, Switch, Route } from 'react-router-dom';
-import history from './history';
+import App from './App';
 
 ReactDOM.render(
-    <Router history={history}>
-        <Switch>
-            <Route exact path='/' component={Home}/>
-        </Switch>
-    </Router>, 
+    <App/>, 
     document.getElementById('root')
 );
 

@@ -12,6 +12,8 @@
     "react-dom": "16.11.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.1",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^1.2.1",
     "web3": "1.2.2"
   },
   "scripts": {
