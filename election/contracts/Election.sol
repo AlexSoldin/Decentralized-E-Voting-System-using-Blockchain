@@ -48,6 +48,10 @@ contract Election {
         });
     }
 
+    /*
+        Accessor methods for candidate data
+        Returns: name, party, voteCount
+    */
     function getCandidateName(uint _candidateId) public view returns (string) {
         return candidates[_candidateId].name;
     }

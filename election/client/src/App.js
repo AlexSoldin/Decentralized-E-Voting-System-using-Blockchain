@@ -14,7 +14,7 @@ class App extends Component {
         ElectionInstance: undefined, 
         web3: null, 
         account: null, 
-        isOwner: false,
+        isOwner: false
     };  
     
 
@@ -51,10 +51,10 @@ class App extends Component {
 
             this.setState({ start: start, end: end });
 
-            this.addCandidate();
-            // console.log(this.state.ElectionInstance);
+            // this.addCandidate();
 
             let candidateCount = await this.state.ElectionInstance.methods.getCandidateCount().call();
+            this.setState({ candidateCount: candidateCount });
             console.log(candidateCount);
             this.parseCandidates(candidateCount);
 
@@ -73,21 +73,21 @@ class App extends Component {
             let candidateName = await this.state.ElectionInstance.methods.getCandidateName(i).call();
             let candidateParty = await this.state.ElectionInstance.methods.getCandidateParty(i).call();
             let candidateVoteCount = await this.state.ElectionInstance.methods.getCandidateVoteCount(i).call();
-                candidatesList.push({
-                    name: candidateName,
-                    party: candidateParty,
-                    voteCount: candidateVoteCount
-                });
-                this.setState({ candidates: candidatesList })
-                console.log(candidatesList);
+            candidatesList.push({
+                candidateId: i,
+                name: candidateName,
+                party: candidateParty,
+                voteCount: candidateVoteCount
+            });
         }
-        console.log(candidatesList);
+        this.setState({ candidatesToDisplay: candidatesList });
+        // console.log(this.state.candidatesToDisplay);
     }
 
     addCandidate = async () => {
         await this.state.ElectionInstance.methods.addCandidate(
-            'Alex Soldin',
-            'Donkey'
+            'Dalia Solomon',
+            'Chunky'
         ).send({
             from: this.state.account,
             gas: 1000000
@@ -102,7 +102,7 @@ class App extends Component {
                     <Route exact path='/' component={() => (
                         <div>
                         <Jumbotron account={this.state.account}/>
-                        <VotingPanel candidates={this.state.candidates}/>
+                        <VotingPanel candidates={this.state.candidatesToDisplay}/>
                         </div>
                     )}/>
                 </Switch>
