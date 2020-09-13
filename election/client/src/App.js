@@ -6,6 +6,7 @@ import getWeb3 from "./getWeb3";
 import Navbar from './components/Navbar';
 import Jumbotron from './components/Jumbotron';
 import VotingPanel from './components/VotingPanel';
+import Candidate from './components/Candidate';
 import history from './history';
 
 
@@ -83,16 +84,6 @@ class App extends Component {
         this.setState({ candidatesToDisplay: candidatesList });
         // console.log(this.state.candidatesToDisplay);
     }
-
-    addCandidate = async () => {
-        await this.state.ElectionInstance.methods.addCandidate(
-            'Dalia Solomon',
-            'Chunky'
-        ).send({
-            from: this.state.account,
-            gas: 1000000
-        });
-    }
         
     render(){
         return(
@@ -102,6 +93,8 @@ class App extends Component {
                     <Route exact path='/' component={() => (
                         <div>
                         <Jumbotron account={this.state.account}/>
+                        {this.state.isOwner &&
+                        <Candidate account={this.state.account} ElectionInstance={this.state.ElectionInstance}/>}
                         <VotingPanel candidates={this.state.candidatesToDisplay}/>
                         </div>
                     )}/>

@@ -2,15 +2,18 @@
   padding-bottom: 20px;
 }
 
+.Jumbotron {
+  padding-bottom: 20px;
+}
+
 .Jumbotron h1 {
   font-size: 4em;
 }
 
 .VotingPanel {
-  padding-top: 20px;
   padding-bottom: 20px;
 }
 
-/* .VotingPanel h1 {
-  text-decoration: underline;
-} */
+.Candidate {
+  padding-bottom: 20px;
+}
