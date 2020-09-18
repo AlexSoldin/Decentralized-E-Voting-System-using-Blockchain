@@ -9,7 +9,7 @@ class Jumbotron extends Component {
         <Container>
         <Segment>
           <h1>Welcome to VoteChain!</h1>
-          <h3>An electornic voting system that uses blockchain technology.</h3>
+          <h3>An electronic voting system that uses blockchain technology.</h3>
           <h5>Your address is: {this.props.account}</h5>
         </Segment>
         </Container>

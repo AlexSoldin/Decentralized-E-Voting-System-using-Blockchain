@@ -1,9 +1,10 @@
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.22;
 
 contract Election {
     address public owner;
     uint candidateCount;
     uint voterCount;
+    uint castVotesCount;
     bool start;
     bool end;
 
@@ -27,7 +28,7 @@ contract Election {
         _;
     }
 
-    // Model a Candidate
+    // Candidate Model
     struct Candidate{
         uint candidateId;
         string name;
@@ -69,48 +70,61 @@ contract Election {
         return candidateCount;
     }
 
-    // Model a Voter
+    // Voter Model
     struct Voter{
         address voterAddress;
-        string name;
         bool hasVoted;
         bool isVerified;
     }
 
     mapping(address => Voter) voters;
-    // address[] public voters;
 
-    // request to be added as voter
-    // function requestVoter(string _name, string _aadhar) public {
-    //     Voter memory newVoter = Voter({
+    function addVoter(address _publicKey) public onlyAdmin {
+        voterCount++;
+        voters[_publicKey] = Voter({
+            voterAddress : _publicKey,
+            hasVoted : false,
+            isVerified : true
+        });
+    }
+
+    // Request to be added as a voter
+    // function requestVoter(string _name) public {
+    //     voters[msg.sender] = Voter({
     //         voterAddress : msg.sender,
     //         name : _name,
-    //         aadhar : _aadhar,
     //         hasVoted : false,
-    //         isVerified : false
+    //         isVerified : true
     //     });
-    //     voters[msg.sender] = newVoter;
-    //     voters.push(msg.sender);
+    //     requestedVoters.push(msg.sender);
     //     voterCount += 1;
     // }
 
-    // get total number of voters
+    // Addresses of voters wanting to participate 
+    // function getRequestedVoters(uint _index) public view returns(address){
+    //     return requestedVoters[_index];
+    // }
+
+    // Number of registered voters
     function getVoterCount() public view returns (uint) {
         return voterCount;
     }
 
-    // function verifyVoter(address _address) public onlyAdmin {
-    //     voters[_address].isVerified = true;
-    // }
+    // Number of cast votes
+    function getCastVotesCount() public view returns (uint) {
+        return castVotesCount;
+    }
 
-    function vote(uint _candidateId) public{
-        require(voters[msg.sender].hasVoted == false);
+    // Vote for a certain candidate
+    function vote(uint _candidateId) public {
+        require(voters[msg.sender].hasVoted == false, "You have already cast your vote.");
         require(voters[msg.sender].isVerified == true);
-        require(_candidateId > 0 && _candidateId <= candidateCount);
-        require(start == true);
-        require(end == false);
+        require(_candidateId > 0 && _candidateId <= candidateCount, "Please choose a valid candidate ID.");
+        // require(start == true);
+        // require(end == false);
         candidates[_candidateId].voteCount++;
         voters[msg.sender].hasVoted = true;
+        castVotesCount++;
     }
 
     /*

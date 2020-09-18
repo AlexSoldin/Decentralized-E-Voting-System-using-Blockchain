@@ -6,7 +6,7 @@ import getWeb3 from "./getWeb3";
 import Navbar from './components/Navbar';
 import Jumbotron from './components/Jumbotron';
 import VotingPanel from './components/VotingPanel';
-import Candidate from './components/Candidate';
+import Admin from './components/Admin';
 import history from './history';
 
 
@@ -28,7 +28,6 @@ class App extends Component {
         try {
             // Get network provider and web3 instance.
             const web3 = await getWeb3();
-
             // Use web3 to get the user's accounts.
             const accounts = await web3.eth.getAccounts();
 
@@ -52,12 +51,15 @@ class App extends Component {
 
             this.setState({ start: start, end: end });
 
-            // this.addCandidate();
-
             let candidateCount = await this.state.ElectionInstance.methods.getCandidateCount().call();
             this.setState({ candidateCount: candidateCount });
-            console.log(candidateCount);
-            this.parseCandidates(candidateCount);
+            this.parseCandidates(this.state.candidateCount);
+
+            let voterCount = await this.state.ElectionInstance.methods.getVoterCount().call();
+            this.setState({ voterCount: voterCount });
+
+            let castVoterCount = await this.state.ElectionInstance.methods.getCastVotesCount().call();
+            this.setState({ castVoterCount: castVoterCount });
 
         } catch (error) {
         // Catch any errors for any of the above operations.
@@ -82,7 +84,6 @@ class App extends Component {
             });
         }
         this.setState({ candidatesToDisplay: candidatesList });
-        // console.log(this.state.candidatesToDisplay);
     }
         
     render(){
@@ -94,8 +95,15 @@ class App extends Component {
                         <div>
                         <Jumbotron account={this.state.account}/>
                         {this.state.isOwner &&
-                        <Candidate account={this.state.account} ElectionInstance={this.state.ElectionInstance}/>}
-                        <VotingPanel candidates={this.state.candidatesToDisplay}/>
+                        <Admin account={this.state.account} ElectionInstance={this.state.ElectionInstance} voters={this.state.votersToVerify}/>}
+                        <VotingPanel 
+                            ElectionInstance={this.state.ElectionInstance}
+                            account={this.state.account}
+                            candidateCount={this.state.candidateCount} 
+                            voterCount={this.state.voterCount} 
+                            castVoterCount={this.state.castVoterCount} 
+                            candidates={this.state.candidatesToDisplay}
+                        />
                         </div>
                     )}/>
                 </Switch>
