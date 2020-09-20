@@ -40,12 +40,35 @@ class Admin extends Component {
         window.location.reload(false);
     }
 
+    startElection = async () => {
+        await this.props.ElectionInstance.methods.startElection().send({
+            from: this.props.account,
+            gas: 1000000
+        });
+        console.log("Election has started.")
+        // Reload the page
+        window.location.reload(false);;
+    }
+
+    endElection = async () => {
+        await this.props.ElectionInstance.methods.endElection().send({
+            from: this.props.account,
+            gas: 1000000
+        });
+        console.log("Election has ended.")
+        // Reload the page
+        window.location.reload(false);;
+    }
+
     render(){
         return(
             <div className="Candidate">
                 <Container>
                     <Segment>
                         <h1>Admin</h1>
+
+                        <Button color='green' onClick={this.startElection} >Start Election</Button>
+                        <Button color='red' onClick={this.endElection} >End Election</Button>
 
                         {/* <Divider /> */}
                         <Divider horizontal>Add Candidate</Divider>

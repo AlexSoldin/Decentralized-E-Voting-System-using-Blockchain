@@ -61,6 +61,12 @@ class App extends Component {
             let castVoterCount = await this.state.ElectionInstance.methods.getCastVotesCount().call();
             this.setState({ castVoterCount: castVoterCount });
 
+            let electionStarted = await this.state.ElectionInstance.methods.getStart().call();
+            this.setState({ electionStarted: electionStarted });
+
+            let electionEnded = await this.state.ElectionInstance.methods.getEnd().call();
+            this.setState({ electionEnded: electionEnded });
+
         } catch (error) {
         // Catch any errors for any of the above operations.
         alert(
@@ -103,6 +109,8 @@ class App extends Component {
                             voterCount={this.state.voterCount} 
                             castVoterCount={this.state.castVoterCount} 
                             candidates={this.state.candidatesToDisplay}
+                            electionStarted={this.state.electionStarted}
+                            electionEnded={this.state.electionEnded}
                         />
                         </div>
                     )}/>

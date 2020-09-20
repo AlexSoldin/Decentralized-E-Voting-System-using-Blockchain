@@ -13,6 +13,7 @@ contract Election {
         owner = msg.sender;
         candidateCount = 0;
         voterCount = 0;
+        castVotesCount = 0;
         start = false;
         end = false;
     }
@@ -88,23 +89,6 @@ contract Election {
         });
     }
 
-    // Request to be added as a voter
-    // function requestVoter(string _name) public {
-    //     voters[msg.sender] = Voter({
-    //         voterAddress : msg.sender,
-    //         name : _name,
-    //         hasVoted : false,
-    //         isVerified : true
-    //     });
-    //     requestedVoters.push(msg.sender);
-    //     voterCount += 1;
-    // }
-
-    // Addresses of voters wanting to participate 
-    // function getRequestedVoters(uint _index) public view returns(address){
-    //     return requestedVoters[_index];
-    // }
-
     // Number of registered voters
     function getVoterCount() public view returns (uint) {
         return voterCount;
@@ -117,11 +101,11 @@ contract Election {
 
     // Vote for a certain candidate
     function vote(uint _candidateId) public {
+        require(start == true, "Election has not started.");
+        require(end == false, "Election has ended.");
         require(voters[msg.sender].hasVoted == false, "You have already cast your vote.");
-        require(voters[msg.sender].isVerified == true);
+        require(voters[msg.sender].isVerified == true, "You are not verified to vote.");
         require(_candidateId > 0 && _candidateId <= candidateCount, "Please choose a valid candidate ID.");
-        // require(start == true);
-        // require(end == false);
         candidates[_candidateId].voteCount++;
         voters[msg.sender].hasVoted = true;
         castVotesCount++;

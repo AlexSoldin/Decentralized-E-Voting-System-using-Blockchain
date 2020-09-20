@@ -9,7 +9,7 @@ class VotingPanel extends Component {
         this.setState({ candidateId: event.target.value });
     }
 
-    displayTableCandidates = (candidates) =>   
+    displayTableCandidatesResults = (candidates) =>
         candidates.map((candidate) => (
                 <Table.Row key={candidate.candidateId}>
                 <Table.Cell>
@@ -24,6 +24,22 @@ class VotingPanel extends Component {
                 <Table.Cell>{candidate.voteCount}</Table.Cell>
               </Table.Row>
         ));
+
+    displayTableCandidates = (candidates) =>
+    candidates.map((candidate) => (
+            <Table.Row key={candidate.candidateId}>
+            <Table.Cell>
+                {candidate.candidateId}
+            </Table.Cell>
+            <Table.Cell>
+                {candidate.name}
+            </Table.Cell>
+            <Table.Cell>
+                {candidate.party}
+            </Table.Cell>
+            <Table.Cell></Table.Cell>
+            </Table.Row>
+    ));
     
     displayFormCandidates = (candidates) =>   
         candidates.map((candidate) => (
@@ -52,6 +68,18 @@ class VotingPanel extends Component {
                 <Container>
                 <Segment>
                     <h1>Election</h1>
+
+                    {
+                        this.props.electionStarted === true ?
+                        <h3>Election has started.</h3> :
+                        <h3></h3>
+                    }
+
+                    {
+                        this.props.electionEnded === true ?
+                        <h3>Election has ended.</h3> :
+                        <h3></h3>
+                    }
 
                     <div>
                         Number of Candidates: {this.props.candidateCount}
@@ -89,7 +117,10 @@ class VotingPanel extends Component {
                             </Table.Cell>
                             <Table.Cell>0</Table.Cell>
                         </Table.Row> :
-                        this.displayTableCandidates(candidates)
+                            
+                            this.props.voterCount===this.props.castVoterCount || this.props.electionEnded===true ?
+                            this.displayTableCandidatesResults(candidates) :
+                            this.displayTableCandidates(candidates)
                         }
                         </Table.Body>
                     </Table>
