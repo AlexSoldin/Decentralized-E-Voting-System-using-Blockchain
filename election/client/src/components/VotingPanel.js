@@ -5,7 +5,6 @@ import { Segment, Container, Table, Header, Divider, Form, Button } from 'semant
 class VotingPanel extends Component {
 
     updateCandidate = event => {
-        // event.preventDefault();
         this.setState({ candidateId: event.target.value });
     }
 
@@ -51,12 +50,18 @@ class VotingPanel extends Component {
         ));
 
     castVote = async () => {
-        await this.props.ElectionInstance.methods.vote(
+        const result =  await this.props.ElectionInstance.methods.vote(
             this.state.candidateId
         ).send({
             from: this.props.account,
             gas: 1000000
         });
+
+        // const convert = (from, to) => str => Buffer.from(str, from).toString(to);
+        // const hexToUtf8 = convert('hex', 'utf8');
+        // const message = hexToUtf8(result.substr(138));
+        console.log(result);
+        
         // Reload the page
         window.location.reload(false);
     }
@@ -71,13 +76,13 @@ class VotingPanel extends Component {
 
                     {
                         this.props.electionStarted === true ?
-                        <h3>Election has started.</h3> :
+                        <h3>Election has started</h3> :
                         <h3></h3>
                     }
 
                     {
                         this.props.electionEnded === true ?
-                        <h3>Election has ended.</h3> :
+                        <h3>Election has ended</h3> :
                         <h3></h3>
                     }
 
