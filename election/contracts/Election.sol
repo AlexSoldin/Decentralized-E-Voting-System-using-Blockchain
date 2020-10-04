@@ -58,6 +58,7 @@ contract Election {
 
     // Add a new candidate
     function addCandidate(string _name, string _party) public onlyAdmin {
+        require(start == false && end == false, "Election is not ready.");
         candidateCount++;
         candidates[candidateCount] = Candidate({
             candidateId : candidateCount,
@@ -95,10 +96,11 @@ contract Election {
         bool isVerified;
     }
 
-    mapping(address => Voter) voters;
+    mapping(address => Voter) public voters;
 
     // Add a new voter object 
     function addVoter(address _publicKey) public onlyAdmin {
+        require(start == false && end == false, "Election is not ready.");
         voterCount++;
         voters[_publicKey] = Voter({
             voterAddress : _publicKey,
