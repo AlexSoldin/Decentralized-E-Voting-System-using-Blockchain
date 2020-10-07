@@ -27,12 +27,14 @@ contract("Election", accounts => {
 			return electionInstance.addCandidate(candidateName1, candidateParty1, {from: accounts[0]});
 		}).then((receipt) => {
 			assert.equal(receipt.logs.length, 1, 'an event was triggered');
-            assert.equal(receipt.logs[0].event, 'addedCandidateEvent', 'the event type is correct');
+			assert.equal(receipt.logs[0].event, 'addedCandidateEvent', 'the event type is correct');
+			assert.equal(receipt.logs[0].args._name, '0x001381bef9f589245c2102fc22ff92477cb6592e3c43aaedaecea889ab751ef8', 'contains the correct name');
+			assert.equal(receipt.logs[0].args._party, '0x7b1e9601ffb4abead3ebf4625959956be8bffa1318c8d9b84adc4360329de865', 'contains the correct party');
 			return electionInstance.candidates(1);
 		}).then((candidate) => {
 			assert.equal(candidate[0], 1, 'initialised with the correct id');
 			assert.equal(candidate[1], 'Anthony Stark', 'contains the correct name');
-			assert.equal(candidate[2], 'Iron Man', 'contains the correct name');
+			assert.equal(candidate[2], 'Iron Man', 'contains the correct party');
 			assert.equal(candidate[3], 0, 'initialised with the correct vote count');
 			return electionInstance.getCandidateCount();
 		}).then((count) => {
@@ -42,12 +44,14 @@ contract("Election", accounts => {
 			return electionInstance.addCandidate(candidateName2, candidateParty2, {from: accounts[0]});
 		}).then((receipt) => {
 			assert.equal(receipt.logs.length, 1, 'an event was triggered');
-            assert.equal(receipt.logs[0].event, 'addedCandidateEvent', 'the event type is correct');
+			assert.equal(receipt.logs[0].event, 'addedCandidateEvent', 'the event type is correct');
+			assert.equal(receipt.logs[0].args._name, '0x18b0fa11b601deb26f392389f84188dcd1cc29fd665b7edcade56e62f98da430', 'contains the correct name');
+			assert.equal(receipt.logs[0].args._party, '0x38d70ca9b42b5c6b4f414a0e457c0feb66ec7a5fc6ac856e43684fe824c3d686', 'contains the correct party');
 			return electionInstance.candidates(2);
 		}).then((candidate) => {
 			assert.equal(candidate[0], 2, 'initialised with the correct id');
 			assert.equal(candidate[1], 'Peter Parker', 'contains the correct name');
-			assert.equal(candidate[2], 'Spider-Man', 'contains the correct name');
+			assert.equal(candidate[2], 'Spider-Man', 'contains the correct party');
 			assert.equal(candidate[3], 0, 'initialised with the correct vote count');
 			return electionInstance.getCandidateCount();
 		}).then((count) => {
@@ -227,8 +231,8 @@ contract("Election", accounts => {
             assert.equal(receipt.logs[0].event, 'votedEvent', 'the event type is correct');
             assert.equal(receipt.logs[0].args._candidateId.toNumber(), candidateId, 'the candidate id is correct');
             return electionInstance.candidates(candidateId);
-        }).then((candidate2) => {
-			const voteCount = candidate2[3];
+        }).then((candidate) => {
+			const voteCount = candidate[3];
             assert.equal(voteCount, 1, 'first vote is accepted');
             return electionInstance.vote(candidateId, { from: accounts[2] });
         }).then(assert.fail).catch((error) => {

@@ -120,7 +120,10 @@ contract Election {
         return castVotesCount;
     }
 
-    // Vote for a certain candidate Id
+    /** 
+    * @dev Vote for a certain candidate Id
+    * @param _candidateId is the index of the candidate in the candidates mapping
+    */
     function vote(uint _candidateId) public {
         require(start == true && end == false, "Election is not ready.");
         require(voters[msg.sender].hasVoted == false, "You have already cast your vote.");
@@ -132,26 +135,36 @@ contract Election {
         emit votedEvent(_candidateId);
     }
 
-    // Start the election
+    /** 
+    * @dev Starts the election by changing the value of the start boolean
+    */
     function startElection() public onlyAdmin {
         start = true;
         end = false;
         emit electionReady(1);
     }
 
-    // End the election
+    /** 
+    * @dev Ends the election by changing the value of the end boolean
+    */
     function endElection() public onlyAdmin {
         end = true;
         start = false;
         emit electionReady(0);
     }
 
-    // Check if the election has started
+    /** 
+    * @dev Checks if the election has started
+    * @return boolean that stores the election started value
+    */
     function getStart() public view returns (bool) {
         return start;
     }
 
-    // Check if the election has ended
+    /** 
+    * @dev Checks if the election has ended
+    * @return boolean that stores the election ended value
+    */
     function getEnd() public view returns (bool) {
         return end;
     }
@@ -160,7 +173,7 @@ contract Election {
     * @dev Iterates over candidates and determines which candidate has the higest vote count
     * @return candidate Id of the winner
     */
-    function winnerIndex() public onlyAdmin view returns (uint winnerIndex_) {
+    function winnerIndex() public view returns (uint winnerIndex_) {
         require(end == true, "Election must have ended");
         uint winningVoteCount = 0;
         for (uint i = 1; i <= candidateCount; i++) {
@@ -175,7 +188,7 @@ contract Election {
     * @dev Calls winningProposal() function to find the index of the winner and returns the winners name
     * @return winnerName_ the name of the winner
     */
-    function winnerName() public onlyAdmin view returns (string winnerName_) {
+    function winnerName() public view returns (string winnerName_) {
         require(end == true, "Election must have ended");
         winnerName_ = candidates[winnerIndex()].name;
     }

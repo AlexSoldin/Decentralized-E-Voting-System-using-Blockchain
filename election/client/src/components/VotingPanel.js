@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../App.css";
-import { Segment, Container, Table, Header, Divider, Form, Button } from 'semantic-ui-react'
+import { Segment, Container, Table, Header, Divider, Form, Button } from 'semantic-ui-react';
+import Pie from './Pie';
 
 class VotingPanel extends Component {
 
@@ -39,15 +40,6 @@ class VotingPanel extends Component {
             <Table.Cell></Table.Cell>
             </Table.Row>
     ));
-    
-    displayFormCandidates = (candidates) =>   
-        candidates.map((candidate) => (
-                <option 
-                    key={candidate.candidateId} 
-                    value={candidate.name}>
-                        [{candidate.candidateId}] {candidate.name}
-                </option>
-        ));
 
     castVote = async () => {
         const result =  await this.props.ElectionInstance.methods.vote(
@@ -67,7 +59,22 @@ class VotingPanel extends Component {
     }
 
     render() {
-        const { candidates } = this.props;
+        const { candidates, winnerName } = this.props;
+
+        // Pie chart data
+        const labels = [];
+        const data = {
+            series: []
+        };
+
+        if(candidates !== undefined){
+            for(let i = 0; i < this.props.candidateCount; i++){
+                let index = candidates[i].name.indexOf(' ', 0);
+                labels.push(candidates[i].name.substring(index+1));
+                data.series.push(parseInt(candidates[i].voteCount, 10));
+            }
+        }
+        
         return (
             <div className="VotingPanel">
                 <Container>
@@ -123,12 +130,25 @@ class VotingPanel extends Component {
                             <Table.Cell>0</Table.Cell>
                         </Table.Row> :
                             
-                            this.props.voterCount===this.props.castVoterCount || this.props.electionEnded===true ?
+                            this.props.electionEnded===true ?
                             this.displayTableCandidatesResults(candidates) :
                             this.displayTableCandidates(candidates)
                         }
                         </Table.Body>
                     </Table>
+
+                    {
+                        winnerName !== '' ?
+                        <h3 className="winner">The winner is {winnerName}</h3> :
+                        <h3></h3>
+                    }
+
+                    {
+                        candidates === undefined ?
+                        <p></p> :
+                        this.props.electionEnded===true ?
+                        <Pie data={data} labels={labels} /> : <p></p>
+                    }
                     
                     <Divider horizontal>Select Candidate</Divider>
 

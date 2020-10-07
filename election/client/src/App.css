@@ -14,6 +14,15 @@
   padding-bottom: 20px;
 }
 
+.winner {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .Candidate {
   padding-bottom: 20px;
+}
+
+.Pie {
+  text-align: center;
 }

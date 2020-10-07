@@ -67,6 +67,12 @@ class App extends Component {
             let electionEnded = await this.state.ElectionInstance.methods.getEnd().call();
             this.setState({ electionEnded: electionEnded });
 
+            this.setState({ winnerName: '' });
+            if(this.state.electionEnded === true){
+                let winnerName = await this.state.ElectionInstance.methods.winnerName().call();
+                this.setState({ winnerName: winnerName });
+            }
+
         } catch (error) {
         // Catch any errors for any of the above operations.
         alert(
@@ -111,6 +117,7 @@ class App extends Component {
                             candidates={this.state.candidatesToDisplay}
                             electionStarted={this.state.electionStarted}
                             electionEnded={this.state.electionEnded}
+                            winnerName={this.state.winnerName}
                         />
                         </div>
                     )}/>
