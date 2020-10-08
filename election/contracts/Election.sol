@@ -8,7 +8,9 @@ contract Election {
     bool start;
     bool end;
 
-    // Constructor
+    /**
+    * @dev Set contract deployer as owner, set counters as zero and set booleans as false
+    */
     function Election() public {
         owner = msg.sender;
         candidateCount = 0;
@@ -23,25 +25,29 @@ contract Election {
         return owner;
     }
 
-    // Only Admin
+    // Only Admin modifier to check if caller is the owner
     modifier onlyAdmin() {
         require(msg.sender == owner);
         _;
     }
 
+    // Event for adding a new candidate
     event addedCandidateEvent(
         string indexed _name,
         string indexed _party
     );
 
+    // Event for adding a new voter
     event addedVoterEvent(
         address indexed _publicKey
     );
 
+    // Event for the election being ready
     event electionReady(
         uint indexed _ready
     );
 
+    // Event for a vote being cast
     event votedEvent(
         uint indexed _candidateId
     );
@@ -56,7 +62,11 @@ contract Election {
 
     mapping(uint => Candidate) public candidates;
 
-    // Add a new candidate
+    /** 
+    * @dev Add a candidate to the election
+    * @param _name of the candidate to be added
+    * @param _party that the candidate belongs to
+    */
     function addCandidate(string _name, string _party) public onlyAdmin {
         require(start == false && end == false, "Election is not ready.");
         candidateCount++;
@@ -69,22 +79,37 @@ contract Election {
         emit addedCandidateEvent(_name, _party);
     }
 
-    // Name of a certain candidate
+    /** 
+    * @dev Gets the name of a specific candidate
+    * @param _candidateId used to locate the candidate in the candidates mapping
+    * @return tring that stores the name associated with the candidate
+    */
     function getCandidateName(uint _candidateId) public view returns (string) {
         return candidates[_candidateId].name;
     }
 
-    // Party of a certain candidate
+    /** 
+    * @dev Gets the party of a specific candidate
+    * @param _candidateId used to locate the candidate in the candidates mapping
+    * @return string that stores the party associated with the candidate
+    */
     function getCandidateParty(uint _candidateId) public view returns (string) {
         return candidates[_candidateId].party;
     }
 
-     // VoteCount of a certain candidate
+    /** 
+    * @dev Gets the vote count of a specific candidate
+    * @param _candidateId used to locate the candidate in the candidates mapping
+    * @return uint that stores the number of votes relating to the candidate
+    */
     function getCandidateVoteCount(uint _candidateId) public view returns (uint) {
         return candidates[_candidateId].voteCount;
     }
 
-    // CandidateCount accessor method
+    /** 
+    * @dev Checks the number of candidates that have been added to the election
+    * @return uint that stores the number of candidates
+    */
     function getCandidateCount() public view returns (uint) {
         return candidateCount;
     }
@@ -98,7 +123,10 @@ contract Election {
 
     mapping(address => Voter) public voters;
 
-    // Add a new voter object 
+    /** 
+    * @dev Add a voter to the election
+    * @param _publicKey is the public key of the voter that is being added to the election
+    */
     function addVoter(address _publicKey) public onlyAdmin {
         require(start == false && end == false, "Election is not ready.");
         voterCount++;
@@ -110,12 +138,18 @@ contract Election {
         emit addedVoterEvent(_publicKey);
     }
 
-    // Number of registered voters
+    /** 
+    * @dev Checks the number of voters that are registered
+    * @return uint that stores the number of registered voters
+    */
     function getVoterCount() public view returns (uint) {
         return voterCount;
     }
 
-    // Number of cast votes
+    /** 
+    * @dev Checks the number of votes that have been cast
+    * @return uint that stores the number of cast votes 
+    */
     function getCastVotesCount() public view returns (uint) {
         return castVotesCount;
     }
