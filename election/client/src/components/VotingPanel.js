@@ -48,10 +48,6 @@ class VotingPanel extends Component {
             from: this.props.account,
             gas: 1000000
         });
-
-        // const convert = (from, to) => str => Buffer.from(str, from).toString(to);
-        // const hexToUtf8 = convert('hex', 'utf8');
-        // const message = hexToUtf8(result.substr(138));
         console.log(result);
         
         // Reload the page

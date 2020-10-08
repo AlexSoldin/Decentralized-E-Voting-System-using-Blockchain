@@ -292,6 +292,18 @@ contract("Election", accounts => {
 			assert.equal(count, 3, 'administrator was not allowed to add voter during election');
 		});
 	});
+
+	it('doesn`t allow the winner to be displayed if the election hasn`t ended', () => {
+		return Election.deployed().then((instance) => {
+			electionInstance = instance;
+			return electionInstance.winnerIndex();
+		}).then(assert.fail).catch((error) => {
+			assert(error.message.indexOf('revert') >= 0, 'contains the revert command');
+			return electionInstance.winnerName();
+		}).then(assert.fail).catch((error) => {
+			assert(error.message.indexOf('revert') >= 0, 'contains the revert command');
+		});
+	});
 	
 	it('doesn`t allow external accounts to vote if the election has ended', () => {
 		return Election.deployed().then((instance) => {
@@ -310,6 +322,18 @@ contract("Election", accounts => {
         }).then((candidate) => {
 			const voteCount = candidate[3];
             assert.equal(voteCount, 1, 'candidate has expected number of votes and voter was too late');
+		});
+	});
+
+	it('allows the winner to be displayed once the election has ended', () => {
+		return Election.deployed().then((instance) => {
+			electionInstance = instance;
+			return electionInstance.winnerIndex();
+		}).then((index) => {
+			assert.equal(index, 1, 'the correct candidate index is returned');
+			return electionInstance.winnerName();
+		}).then((name) => {
+			assert.equal(name, 'Anthony Stark', 'the name of the winner is returned');
 		});
 	});
 });
