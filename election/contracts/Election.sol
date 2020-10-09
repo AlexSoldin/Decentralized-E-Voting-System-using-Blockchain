@@ -11,7 +11,7 @@ contract Election {
     /**
     * @dev Set contract deployer as owner, set counters as zero and set booleans as false
     */
-    function Election() public {
+    constructor() public {
         owner = msg.sender;
         candidateCount = 0;
         voterCount = 0;

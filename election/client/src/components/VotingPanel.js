@@ -80,13 +80,13 @@ class VotingPanel extends Component {
                     {
                         this.props.electionStarted === true ?
                         <h3>Election has started</h3> :
-                        <h3></h3>
+                        <p></p>
                     }
 
                     {
                         this.props.electionEnded === true ?
                         <h3>Election has ended</h3> :
-                        <h3></h3>
+                        <p></p>
                     }
 
                     <div>
@@ -136,7 +136,7 @@ class VotingPanel extends Component {
                     {
                         winnerName !== '' ?
                         <h3 className="winner">The winner is {winnerName}</h3> :
-                        <h3></h3>
+                        <p></p>
                     }
 
                     {

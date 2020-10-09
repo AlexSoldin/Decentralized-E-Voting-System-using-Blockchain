@@ -1,6 +1,6 @@
 const Election = artifacts.require("./Election.sol");
 
-contract("Election", accounts => {
+contract("Election", (accounts) => {
 	let electionInstance;
 
 	it('initialises the contract with zero candidates', () => {
@@ -8,7 +8,7 @@ contract("Election", accounts => {
             return instance.getCandidateCount();
         }).then((count) => {
             assert.equal(count, 0);
-        });
+		});
     });
 
 	it('initialises the contract with zero voters', () => {
