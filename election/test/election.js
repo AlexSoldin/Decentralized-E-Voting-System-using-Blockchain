@@ -80,7 +80,8 @@ contract("Election", (accounts) => {
 			return electionInstance.addVoter(publicKey1, {from: accounts[0]});
 		}).then((receipt) => {
 			assert.equal(receipt.logs.length, 1, 'an event was triggered');
-            assert.equal(receipt.logs[0].event, 'addedVoterEvent', 'the event type is correct');
+			assert.equal(receipt.logs[0].event, 'addedVoterEvent', 'the event type is correct');
+			assert.equal(receipt.logs[0].args._publicKey, publicKey1, 'contains the correct public key address');
 			return electionInstance.getVoterCount();
 		}).then((count) => {
 			assert.equal(count, 1, 'contract account was allowed to add voter');
@@ -88,7 +89,8 @@ contract("Election", (accounts) => {
 			return electionInstance.addVoter(publicKey2, {from: accounts[0]});
 		}).then((receipt) => {
 			assert.equal(receipt.logs.length, 1, 'an event was triggered');
-            assert.equal(receipt.logs[0].event, 'addedVoterEvent', 'the event type is correct');
+			assert.equal(receipt.logs[0].event, 'addedVoterEvent', 'the event type is correct');
+			assert.equal(receipt.logs[0].args._publicKey, publicKey2, 'contains the correct public key address');
 			return electionInstance.getVoterCount();
 		}).then((count) => {
 			assert.equal(count, 2, 'contract account was allowed to add voter');
@@ -96,7 +98,8 @@ contract("Election", (accounts) => {
 			return electionInstance.addVoter(publicKey3, {from: accounts[0]});
 		}).then((receipt) => {
 			assert.equal(receipt.logs.length, 1, 'an event was triggered');
-            assert.equal(receipt.logs[0].event, 'addedVoterEvent', 'the event type is correct');
+			assert.equal(receipt.logs[0].event, 'addedVoterEvent', 'the event type is correct');
+			assert.equal(receipt.logs[0].args._publicKey, publicKey3, 'contains the correct public key address');
 			return electionInstance.getVoterCount();
 		}).then((count) => {
 			assert.equal(count, 3, 'contract account was allowed to add voter');

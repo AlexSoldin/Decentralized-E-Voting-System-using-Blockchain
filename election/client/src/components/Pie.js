@@ -5,8 +5,8 @@ import ChartistGraph from 'react-chartist';
 class Pie extends Component {
     render() {
         const { data, labels } = this.props;
-        console.log(data);
-        console.log(labels);
+        // console.log(data);
+        // console.log(labels);
 
         let sum = function(a, b) { return a + b };
 

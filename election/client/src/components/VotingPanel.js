@@ -4,6 +4,9 @@ import { Segment, Container, Table, Header, Divider, Form, Button } from 'semant
 import Pie from './Pie';
 
 class VotingPanel extends Component {
+    state = { 
+        timing: true
+    };
 
     updateCandidate = event => {
         this.setState({ candidateId: event.target.value });
@@ -42,16 +45,28 @@ class VotingPanel extends Component {
     ));
 
     castVote = async () => {
-        const result =  await this.props.ElectionInstance.methods.vote(
-            this.state.candidateId
-        ).send({
-            from: this.props.account,
-            gas: 1000000
-        });
-        console.log(result);
-        
-        // Reload the page
-        window.location.reload(false);
+        if(this.state.timing === true){
+            let startTime = performance.now();
+            await this.props.ElectionInstance.methods.vote(
+                this.state.candidateId
+            ).send({
+                from: this.props.account,
+                gas: 1000000
+            });
+            let endTime = performance.now();
+            let timeTaken = endTime - startTime; 
+            console.log("vote(): " + timeTaken + " milliseconds");
+        }
+        else{
+            await this.props.ElectionInstance.methods.vote(
+                this.state.candidateId
+            ).send({
+                from: this.props.account,
+                gas: 1000000
+            });
+            // Reload the page
+            window.location.reload(false);
+        }
     }
 
     render() {

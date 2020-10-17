@@ -4,6 +4,9 @@ import { Segment, Container, Divider, Form, Button } from 'semantic-ui-react'
 
 
 class Admin extends Component {
+    state = { 
+        timing: true
+    };  
 
     updateCandidateName = event => {
         this.setState({ name: event.target.value });
@@ -18,46 +21,99 @@ class Admin extends Component {
     }
 
     addCandidate = async () => {
-        await this.props.ElectionInstance.methods.addCandidate(
-            this.state.name,
-            this.state.party
-        ).send({
-            from: this.props.account,
-            gas: 1000000
-        });
-        // Reload the page
-        window.location.reload(false);
+        if (this.state.timing === true) {
+            let startTime = performance.now();
+            await this.props.ElectionInstance.methods.addCandidate(
+                this.state.name,
+                this.state.party
+            ).send({
+                from: this.props.account,
+                gas: 1000000
+            });
+            let endTime = performance.now();
+            let timeTaken = endTime - startTime; 
+            console.log("addCandidate(): " + timeTaken + " milliseconds");
+        }
+        else {
+            await this.props.ElectionInstance.methods.addCandidate(
+                this.state.name,
+                this.state.party
+            ).send({
+                from: this.props.account,
+                gas: 1000000
+            });
+            // Reload the page
+            window.location.reload(false);
+        }
     }
 
     addVoter = async () => {
-        await this.props.ElectionInstance.methods.addVoter(
-            this.state.voter
-        ).send({
-            from: this.props.account,
-            gas: 1000000
-        });
-        // Reload the page
-        window.location.reload(false);
+        if (this.state.timing === true) {
+            let startTime = performance.now();
+            await this.props.ElectionInstance.methods.addVoter(
+                this.state.voter
+            ).send({
+                from: this.props.account,
+                gas: 1000000
+            });
+            let endTime = performance.now();
+            let timeTaken = endTime - startTime; 
+            console.log("addVoter(): " + timeTaken + " milliseconds");
+        }
+        else {
+            await this.props.ElectionInstance.methods.addVoter(
+                this.state.voter
+            ).send({
+                from: this.props.account,
+                gas: 1000000
+            });
+            // Reload the page
+            window.location.reload(false);
+        }
     }
 
     startElection = async () => {
-        await this.props.ElectionInstance.methods.startElection().send({
-            from: this.props.account,
-            gas: 1000000
-        });
+        if (this.state.timing === true){
+            let startTime = performance.now();
+            await this.props.ElectionInstance.methods.startElection().send({
+                from: this.props.account,
+                gas: 1000000
+            });
+            let endTime = performance.now();
+            let timeTaken = endTime - startTime; 
+            console.log("startElection(): " + timeTaken + " milliseconds");
+        }
+        else {
+            await this.props.ElectionInstance.methods.startElection().send({
+                from: this.props.account,
+                gas: 1000000
+            });
+            // Reload the page
+            window.location.reload(false);
+        }
         console.log("Election has started.")
-        // Reload the page
-        window.location.reload(false);;
     }
 
     endElection = async () => {
-        await this.props.ElectionInstance.methods.endElection().send({
-            from: this.props.account,
-            gas: 1000000
-        });
+        if (this.state.timing === true){
+            let startTime = performance.now();
+            await this.props.ElectionInstance.methods.endElection().send({
+                from: this.props.account,
+                gas: 1000000
+            });
+            let endTime = performance.now();
+            let timeTaken = endTime - startTime; 
+            console.log("endElection(): " + timeTaken + " milliseconds");
+        }
+        else {
+            await this.props.ElectionInstance.methods.endElection().send({
+                from: this.props.account,
+                gas: 1000000
+            });
+            // Reload the page
+            window.location.reload(false);
+        }
         console.log("Election has ended.")
-        // Reload the page
-        window.location.reload(false);;
     }
 
     render(){
@@ -70,7 +126,6 @@ class Admin extends Component {
                         <Button color='green' onClick={this.startElection} >Start Election</Button>
                         <Button color='red' onClick={this.endElection} >End Election</Button>
 
-                        {/* <Divider /> */}
                         <Divider horizontal>Add Candidate</Divider>
 
                         <Form>
