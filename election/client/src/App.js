@@ -16,7 +16,7 @@ class App extends Component {
         web3: null, 
         account: null, 
         isOwner: false,
-        timing: true
+        timing: false
     };  
     
 
@@ -180,7 +180,7 @@ class App extends Component {
                 let candidateVoteCount = await this.state.ElectionInstance.methods.getCandidateVoteCount(i).call();
                 endTime = performance.now();
                 timeTaken = endTime - startTime; 
-                console.log("getCandidateData(" + i + "):" + timeTaken + " milliseconds");
+                console.log("getCandidateData(" + i + "): " + timeTaken + " milliseconds");
                 candidatesList.push({
                     candidateId: i,
                     name: candidateName,

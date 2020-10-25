@@ -5,7 +5,7 @@ import Pie from './Pie';
 
 class VotingPanel extends Component {
     state = { 
-        timing: true
+        timing: false
     };
 
     updateCandidate = event => {

@@ -5,7 +5,7 @@ import { Segment, Container, Divider, Form, Button } from 'semantic-ui-react'
 
 class Admin extends Component {
     state = { 
-        timing: true
+        timing: false
     };  
 
     updateCandidateName = event => {
