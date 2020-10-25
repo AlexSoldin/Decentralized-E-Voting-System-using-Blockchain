@@ -32,7 +32,7 @@ npm run start
 
 ### Navbar.js
 - Render a menu bar 
-- Display the status of the participant 
+- Display the status of the account 
     - Owner
     - Participant
 
