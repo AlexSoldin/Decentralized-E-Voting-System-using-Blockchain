@@ -22,33 +22,23 @@ export default class Navbar extends Component {
     return (
       <div className="Navbar"> 
         <Segment inverted>
-        <Container>
-        <Menu inverted pointing secondary>
-            <Menu.Item style={{  display: "inline-block" }}> 
-                <Icon name='code' size='large'/>
-            </Menu.Item>
-            <Menu.Item header disabled
-                name='VoteChain'
-                active={activeItem === 'VoteChain'}
-                // onClick={this.handleItemClick}
-            />
-            {/* <Menu.Item
-                name='messages'
-                active={activeItem === 'messages'}
-                onClick={this.handleItemClick}
-            />
-            <Menu.Item
-                name='friends'
-                active={activeItem === 'friends'}
-                onClick={this.handleItemClick}
-            /> */}
-            <Menu.Menu position='right'>
-                <Menu.Item
-                name={ownerString}
-                />
-            </Menu.Menu>
-        </Menu>
-        </Container>
+          <Container>
+          <Menu inverted pointing secondary>
+              <Menu.Item style={{  display: "inline-block" }}> 
+                  <Icon name='code' size='large'/>
+              </Menu.Item>
+              <Menu.Item header disabled
+                  name='VoteChain'
+                  active={activeItem === 'VoteChain'}
+                  // onClick={this.handleItemClick}
+              />
+              <Menu.Menu position='right'>
+                  <Menu.Item
+                  name={ownerString}
+                  />
+              </Menu.Menu>
+          </Menu>
+          </Container>
         </Segment>
         {/* <Segment>
           <img src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' />

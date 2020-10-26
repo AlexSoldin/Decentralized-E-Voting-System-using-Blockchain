@@ -7,11 +7,11 @@ class Jumbotron extends Component {
     return (
       <div className="Jumbotron">
         <Container>
-        <Segment>
-          <h1>Welcome to VoteChain!</h1>
-          <h3>An electronic voting system that uses blockchain technology.</h3>
-          <h5>Your address is: {this.props.account}</h5>
-        </Segment>
+          <Segment>
+            <h1>Welcome to VoteChain!</h1>
+            <h3>An electronic voting system that uses blockchain technology.</h3>
+            <h5>Your address is: {this.props.account}</h5>
+          </Segment>
         </Container>
       </div>
     );

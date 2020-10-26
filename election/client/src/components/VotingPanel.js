@@ -72,7 +72,7 @@ class VotingPanel extends Component {
     render() {
         const { candidates, winnerName } = this.props;
 
-        // Pie chart data
+        // Pie chart data initialisation
         const labels = [];
         const data = {
             series: []
@@ -89,92 +89,92 @@ class VotingPanel extends Component {
         return (
             <div className="VotingPanel">
                 <Container>
-                <Segment>
-                    <h1>Election</h1>
+                    <Segment>
+                        <h1>Election</h1>
 
-                    {
-                        this.props.electionStarted === true ?
-                        <h3>Election has started</h3> :
-                        <p></p>
-                    }
-
-                    {
-                        this.props.electionEnded === true ?
-                        <h3>Election has ended</h3> :
-                        <p></p>
-                    }
-
-                    <div>
-                        Number of Candidates: {this.props.candidateCount}
-                    </div>
-                    <div>
-                        Number of Registered Voters: {this.props.voterCount}
-                    </div>
-                    <div>
-                        Number of Cast Votes: {this.props.castVoterCount}
-                    </div>
-
-                    <Divider horizontal>Candidates</Divider>
-
-                    <Table basic='very' celled collapsing>
-                        <Table.Header>
-                        <Table.Row key="headings">
-                            <Table.HeaderCell>Candidate ID</Table.HeaderCell>
-                            <Table.HeaderCell>Candidate</Table.HeaderCell>
-                            <Table.HeaderCell>Political Party</Table.HeaderCell>
-                            <Table.HeaderCell>Vote Count</Table.HeaderCell>
-                        </Table.Row>
-                        </Table.Header>
-
-                        <Table.Body>
                         {
-                        candidates === undefined ?
-                        <Table.Row>
-                            <Table.Cell>
-                                <Header as='h4' image>
-                                    <Header.Content>
-                                        Loading...
-                                        <Header.Subheader>Please be patient</Header.Subheader>
-                                    </Header.Content>
-                                </Header>
-                            </Table.Cell>
-                            <Table.Cell>0</Table.Cell>
-                        </Table.Row> :
-                            
-                            this.props.electionEnded===true ?
-                            this.displayTableCandidatesResults(candidates) :
-                            this.displayTableCandidates(candidates)
+                            this.props.electionStarted === true ?
+                            <h3>Election has started</h3> :
+                            <p></p>
                         }
-                        </Table.Body>
-                    </Table>
 
-                    {
-                        winnerName !== '' ?
-                        <h3 className="winner">The winner is {winnerName}</h3> :
-                        <p></p>
-                    }
+                        {
+                            this.props.electionEnded === true ?
+                            <h3>Election has ended</h3> :
+                            <p></p>
+                        }
 
-                    {
-                        candidates === undefined ?
-                        <p></p> :
-                        this.props.electionEnded===true ?
-                        <Pie data={data} labels={labels} /> : <p></p>
-                    }
-                    
-                    <Divider horizontal>Select Candidate</Divider>
+                        <div>
+                            Number of Candidates: {this.props.candidateCount}
+                        </div>
+                        <div>
+                            Number of Registered Voters: {this.props.voterCount}
+                        </div>
+                        <div>
+                            Number of Cast Votes: {this.props.castVoterCount}
+                        </div>
 
-                    <Form>
-                        <Form.Input
-                            fluid
-                            id='form-subcomponent-shorthand-input-candidate-id'
-                            label='Candidate ID'
-                            placeholder='Candidate ID'
-                            onChange={this.updateCandidate}
-                        />
-                        <Button onClick={this.castVote} >Vote</Button>
-                    </Form>
+                        <Divider horizontal>Candidates</Divider>
 
-                </Segment>
+                        <Table basic='very' celled collapsing>
+                            <Table.Header>
+                            <Table.Row key="headings">
+                                <Table.HeaderCell>Candidate ID</Table.HeaderCell>
+                                <Table.HeaderCell>Candidate</Table.HeaderCell>
+                                <Table.HeaderCell>Political Party</Table.HeaderCell>
+                                <Table.HeaderCell>Vote Count</Table.HeaderCell>
+                            </Table.Row>
+                            </Table.Header>
+
+                            <Table.Body>
+                            {
+                            candidates === undefined ?
+                            <Table.Row>
+                                <Table.Cell>
+                                    <Header as='h4' image>
+                                        <Header.Content>
+                                            Loading...
+                                            <Header.Subheader>Please be patient</Header.Subheader>
+                                        </Header.Content>
+                                    </Header>
+                                </Table.Cell>
+                                <Table.Cell>0</Table.Cell>
+                            </Table.Row> :
+                                
+                                this.props.electionEnded===true ?
+                                this.displayTableCandidatesResults(candidates) :
+                                this.displayTableCandidates(candidates)
+                            }
+                            </Table.Body>
+                        </Table>
+
+                        {
+                            winnerName !== '' ?
+                            <h3 className="winner">The winner is {winnerName}</h3> :
+                            <p></p>
+                        }
+
+                        {
+                            candidates === undefined ?
+                            <p></p> :
+                            this.props.electionEnded===true ?
+                            <Pie data={data} labels={labels} /> : <p></p>
+                        }
+                        
+                        <Divider horizontal>Select Candidate</Divider>
+
+                        <Form>
+                            <Form.Input
+                                fluid
+                                id='form-subcomponent-shorthand-input-candidate-id'
+                                label='Candidate ID'
+                                placeholder='Candidate ID'
+                                onChange={this.updateCandidate}
+                            />
+                            <Button onClick={this.castVote} >Vote</Button>
+                        </Form>
+
+                    </Segment>
                 </Container>
             </div>
         );
